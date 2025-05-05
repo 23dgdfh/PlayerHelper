@@ -1,1 +1,527 @@
-local v44 = game:GetService("v44") local v48 = v44.v48 local v46 = game:GetService("v46") local v47 = game:GetService("v47") local v45 = workspace.CurrentCamera local v5 = game:GetService("v5") local v6 = game:GetService("v6") local v7 = Instance.new("v7", game.CoreGui) v7.Name = "SECRET_GUI" local v8 = Instance.new("Frame") v8.Size = UDim2.new(0, 340, 0, 540) v8.Position = UDim2.new(0.05, 0, 0.1, 0) v8.BackgroundColor3 = Color3.fromRGB(15, 15, 15) v8.BorderSizePixel = 0 v8.Active = true v8.Draggable = false v8.Parent = v7 local v9 = true v47.InputBegan:Connect(v56(input, gameProcessed) if input.KeyCode == Enum.KeyCode.LeftControl and not gameProcessed then v9 = not v9 v7.Enabled = v9 end end) local v10, dragInput, dragStart, startPos v8.InputBegan:Connect(v56(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then v10 = true dragStart = input.Position startPos = v8.Position input.Changed:Connect(v56() if input.UserInputState == Enum.UserInputState.End then v10 = false end end) end end) v8.InputChanged:Connect(v56(input) if input.UserInputType == Enum.UserInputType.MouseMovement then dragInput = input end end) v47.InputChanged:Connect(v56(input) if input == dragInput and v10 then local v11 = input.Position - dragStart v8.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + v11.X, startPos.Y.Scale, startPos.Y.Offset + v11.Y) end end) local v12 = Instance.new("Sound") v12.SoundId = "rbxassetid://17208361335" v12.Volume = 1 v12.Parent = v8 local v13 = Instance.new("TextLabel") v13.Size = UDim2.new(1, 0, 0, 35) v13.Text = "Player Helper" v13.TextColor3 = Color3.new(1, 1, 1) v13.BackgroundColor3 = Color3.fromRGB(25, 25, 25) v13.Font = Enum.Font.Code v13.TextSize = 18 v13.Parent = v8 local v14 = Instance.new("ScrollingFrame") v14.Position = UDim2.new(0, 5, 0, 40) v14.Size = UDim2.new(1, -10, 1, -45) v14.CanvasSize = UDim2.new(0, 0, 2, 0) v14.ScrollBarThickness = 4 v14.BackgroundTransparency = 1 v14.Parent = v8 local v15 = Instance.new("UIListLayout", v14) v15.Padding = UDim.new(0, 5) v15.SortOrder = Enum.SortOrder.LayoutOrder local v16 = Instance.new("Folder", workspace) v16.Name = "VaultESP" local v17 = Instance.new("Folder", workspace) v17.Name = "VaultTrails" local v18 = Instance.new("Folder", workspace) v18.Name = "VaultGlows" local v56 createToggleButton(text, stateRef, callback) local v20 = Instance.new("TextButton") v20.Size = UDim2.new(1, 0, 0, 30) v20.Text = text v20.BackgroundColor3 = Color3.fromRGB(35, 35, 35) v20.TextColor3 = Color3.new(1, 1, 1) v20.Font = Enum.Font.Code v20.TextSize = 14 v20.Parent = v14 local v21 = Instance.new("TextLabel") v21.Size = UDim2.new(0, 20, 1, 0) v21.Position = UDim2.new(1, -25, 0, 0) v21.Text = stateRef.enabled and "✔" or "✖" v21.TextColor3 = stateRef.enabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0) v21.Font = Enum.Font.Code v21.TextSize = 14 v21.BackgroundTransparency = 1 v21.Parent = v20 v20.MouseButton1Click:Connect(v56() stateRef.enabled = not stateRef.enabled v21.Text = stateRef.enabled and "✔" or "✖" v21.TextColor3 = stateRef.enabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0) v12:Play() callback(stateRef.enabled) end) end local v22 = {enabled = false} createToggleButton("Toggle ESP", v22, v56(enabled) v16:ClearAllChildren() if enabled then v46:BindToRenderStep("VaultESP", Enum.RenderPriority.v45.Value + 1, v56() v16:ClearAllChildren() for _, plr in pairs(v44:GetPlayers()) do if plr ~= v48 and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then local v31 = Instance.new("BoxHandleAdornment") v31.Adornee = plr.Character v31.Size = Vector3.new(4, 6, 2) v31.Color3 = Color3.fromRGB(255, 60, 60) v31.Transparency = 0.4 v31.AlwaysOnTop = true v31.ZIndex = 5 v31.Parent = v16 end end end) else v46:UnbindFromRenderStep("VaultESP") end end) local v24 = {enabled = false} createToggleButton("Toggle Name ESP", v24, v56(enabled) v18:ClearAllChildren() if enabled then v46:BindToRenderStep("NameESP", Enum.RenderPriority.v45.Value + 2, v56() v18:ClearAllChildren() for _, plr in pairs(v44:GetPlayers()) do if plr ~= v48 and plr.Character and plr.Character:FindFirstChild("Head") then local v33 = Instance.new("BillboardGui") v33.Adornee = plr.Character.Head v33.Size = UDim2.new(0, 100, 0, 40) v33.StudsOffset = Vector3.new(0, 2, 0) v33.AlwaysOnTop = true v33.Parent = v18 local v26 = Instance.new("TextLabel") v26.Size = UDim2.new(1, 0, 1, 0) v26.BackgroundTransparency = 1 v26.TextColor3 = Color3.fromRGB(255, 255, 255) v26.TextStrokeColor3 = Color3.fromRGB(0, 0, 0) v26.TextStrokeTransparency = 0.5 v26.TextScaled = true v26.Font = Enum.Font.Code local v27 = math.floor((plr.Character.Head.Position - v45.CFrame.Position).Magnitude) v26.Text = plr.DisplayName .. " [" .. v27 .. "m]" v26.Parent = v33 end end end) else v46:UnbindFromRenderStep("NameESP") v18:ClearAllChildren() end end) local v28 = Instance.new("Folder", workspace) v28.Name = "VaultTracers" local v29 = Instance.new("Folder", workspace) v29.Name = "VaultHighlights" local v30 = Instance.new("Folder", workspace) v30.Name = "VaultHealthBars" v48.CharacterAdded:Connect(v56() wait(1) if v22.enabled then v46:UnbindFromRenderStep("VaultESP") v22.enabled = false wait(0.1) v22.enabled = true v46:BindToRenderStep("VaultESP", Enum.RenderPriority.v45.Value + 1, v56() v16:ClearAllChildren() for _, plr in pairs(v44:GetPlayers()) do if plr ~= v48 and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then local v31 = Instance.new("BoxHandleAdornment") v31.Adornee = plr.Character v31.Size = Vector3.new(4, 6, 2) v31.Color3 = Color3.fromRGB(255, 60, 60) v31.Transparency = 0.4 v31.AlwaysOnTop = true v31.ZIndex = 5 v31.Parent = v16 end end end) end end) local v32 = {enabled = false} createToggleButton("Health Bar ESP", v32, v56(enabled) v30:ClearAllChildren() if enabled then v46:BindToRenderStep("HealthBarESP", Enum.RenderPriority.v45.Value + 3, v56() v30:ClearAllChildren() for _, plr in pairs(v44:GetPlayers()) do if plr ~= v48 and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("Humanoid") then local v33 = Instance.new("BillboardGui") v33.Adornee = plr.Character.Head v33.Size = UDim2.new(0, 100, 0, 8) v33.StudsOffset = Vector3.new(0, 3, 0) v33.AlwaysOnTop = true local v34 = Instance.new("UICorner") v34.CornerRadius = UDim.new(0, 4) v34.Parent = v33 v33.Parent = v30 local v35 = Instance.new("Frame") v35.Size = UDim2.new(plr.Character.Humanoid.Health / plr.Character.Humanoid.MaxHealth, 0, 1, 0) v35.BackgroundColor3 = Color3.fromRGB(0, 255, 0) v35.BorderSizePixel = 0 v35.Parent = v33 local v36 = Instance.new("Frame") v36.Size = UDim2.new(1, 0, 1, 0) v36.BackgroundColor3 = Color3.fromRGB(60, 60, 60) v36.BorderSizePixel = 0 v36.ZIndex = -1 v36.Parent = v33 local v37 = Instance.new("UICorner") v37.CornerRadius = UDim.new(0, 4) v37.Parent = v36 end end end) else v46:UnbindFromRenderStep("HealthBarESP") v30:ClearAllChildren() end end) local v38 = {enabled = false} createToggleButton("Highlight ESP", v38, v56(enabled) v29:ClearAllChildren() if enabled then v46:BindToRenderStep("HighlightESP", Enum.RenderPriority.v45.Value + 6, v56() v29:ClearAllChildren() for _, plr in pairs(v44:GetPlayers()) do if plr ~= v48 and plr.Character then local v39 = Instance.new("Highlight") v39.Adornee = plr.Character v39.FillColor = Color3.fromRGB(255, 255, 255) v39.FillTransparency = 0.5 v39.OutlineTransparency = 0 v39.Parent = v29 end end end) else v46:UnbindFromRenderStep("HighlightESP") end end) local v40 = {enabled = false} local v41 = 25 local v42 = 0.12 local v43 = nil local v44 = game:GetService("v44") local v45 = game:GetService("Workspace").CurrentCamera local v46 = game:GetService("v46") local v47 = game:GetService("v47") local v48 = v44.v48 createToggleButton("Toggle Aimbot", v40, v56(enabled) v40.enabled = enabled if v40.enabled then toggleButton.Text = "Aimbot: ON" v48.CameraMode = Enum.CameraMode.LockFirstPerson else toggleButton.Text = "Aimbot: OFF" v48.CameraMode = Enum.CameraMode.Classic end end) local v49 = Instance.new("TextLabel") v49.Size = UDim2.new(1, -10, 0, 20) v49.BackgroundTransparency = 1 v49.Text = "Aim Radius" v49.TextColor3 = Color3.new(1, 1, 1) v49.Font = Enum.Font.Code v49.TextSize = 14 v49.Parent = v14 local v50 = Instance.new("TextBox") v50.Size = UDim2.new(1, -10, 0, 25) v50.Text = tostring(v41) v50.BackgroundColor3 = Color3.fromRGB(40, 40, 40) v50.TextColor3 = Color3.new(1, 1, 1) v50.Font = Enum.Font.Code v50.TextSize = 14 v50.ClearTextOnFocus = false v50.Parent = v14 local v51 = Instance.new("TextLabel") v51.Size = UDim2.new(1, -10, 0, 20) v51.BackgroundTransparency = 1 v51.Text = "Smoothness" v51.TextColor3 = Color3.new(1, 1, 1) v51.Font = Enum.Font.Code v51.TextSize = 14 v51.Parent = v14 local v52 = Instance.new("TextBox") v52.Size = UDim2.new(1, -10, 0, 25) v52.Text = tostring(v42) v52.BackgroundColor3 = Color3.fromRGB(40, 40, 40) v52.TextColor3 = Color3.new(1, 1, 1) v52.Font = Enum.Font.Code v52.TextSize = 14 v52.ClearTextOnFocus = false v52.Parent = v14 local v53 = Instance.new("TextButton") v53.Size = UDim2.new(1, 0, 0, 30) v53.Text = "Apply Aimbot Settings" v53.BackgroundColor3 = Color3.fromRGB(50, 100, 50) v53.TextColor3 = Color3.new(1, 1, 1) v53.Font = Enum.Font.Code v53.TextSize = 14 v53.Parent = v14 v53.MouseButton1Click:Connect(v56() local v54 = tonumber(v50.Text) local v55 = tonumber(v52.Text) if v54 and v55 then v41 = v54 v42 = v55 end end) local v56 updateTarget() local v57 = nil local v58 = v41 for _, plr in pairs(v44:GetPlayers()) do if plr ~= v48 and plr.Character and plr.Character:FindFirstChild("Head") then local v59 = plr.Character.Head local v60 = (v45.CFrame.Position - v59.Position).Magnitude if v60 < v58 then v58 = v60 v57 = v59 end end end v43 = v57 end v46.RenderStepped:Connect(v56() if v40.enabled then updateTarget() if v43 then local v61 = v45.CFrame.Position local v62 = v43.Position + Vector3.new(0, 0.1, 0) local v63 = CFrame.new(v61, v62) v45.CFrame = v45.CFrame:Lerp(v63, v42) end end end) local v64 = Instance.new("TextLabel") v64.Size = UDim2.new(1, -10, 0, 20) v64.BackgroundTransparency = 1 v64.Text = "WalkSpeed: 16" v64.TextColor3 = Color3.new(1, 1, 1) v64.Font = Enum.Font.Code v64.TextSize = 14 v64.Parent = v14 local v65 = Instance.new("TextButton") v65.Size = UDim2.new(1, -10, 0, 20) v65.BackgroundColor3 = Color3.fromRGB(60, 60, 60) v65.Text = "" v65.AutoButtonColor = false v65.Parent = v14 local v66 = Instance.new("Frame") v66.Size = UDim2.new(0.05, 0, 1, 0) v66.BackgroundColor3 = Color3.fromRGB(0, 120, 255) v66.BorderSizePixel = 0 v66.Parent = v65 local v67 = 16 v65.MouseButton1Down:Connect(v56() local v76 v76 = v46.RenderStepped:Connect(v56() local v77 = v47:GetMouseLocation().X local v78 = v77 - v65.AbsolutePosition.X local v79 = math.clamp(v78 / v65.AbsoluteSize.X, 0, 1) v66.Size = UDim2.new(v79, 0, 1, 0) v67 = math.floor(16 + (500 - 16) * v79) v64.Text = "WalkSpeed: " .. v67 if v48.Character and v48.Character:FindFirstChild("Humanoid") then v48.Character.Humanoid.WalkSpeed = v67 end end) v47.InputEnded:Wait() if v76 then v76:Disconnect() end end) local v72 = Instance.new("TextLabel") v72.Size = UDim2.new(1, -10, 0, 20) v72.BackgroundTransparency = 1 v72.Text = "JumpPower: 50" v72.TextColor3 = Color3.new(1, 1, 1) v72.Font = Enum.Font.Code v72.TextSize = 14 v72.Parent = v14 local v73 = Instance.new("TextButton") v73.Size = UDim2.new(1, -10, 0, 20) v73.BackgroundColor3 = Color3.fromRGB(60, 60, 60) v73.Text = "" v73.AutoButtonColor = false v73.Parent = v14 local v74 = Instance.new("Frame") v74.Size = UDim2.new(0.1, 0, 1, 0) v74.BackgroundColor3 = Color3.fromRGB(0, 120, 255) v74.BorderSizePixel = 0 v74.Parent = v73 local v75 = 50 v73.MouseButton1Down:Connect(v56() local v76 v76 = v46.RenderStepped:Connect(v56() local v77 = v47:GetMouseLocation().X local v78 = v77 - v73.AbsolutePosition.X local v79 = math.clamp(v78 / v73.AbsoluteSize.X, 0, 1) v74.Size = UDim2.new(v79, 0, 1, 0) v75 = math.floor(50 + (500 - 50) * v79) v72.Text = "JumpPower: " .. v75 if v48.Character and v48.Character:FindFirstChild("Humanoid") then v48.Character.Humanoid.JumpPower = v75 end end) v47.InputEnded:Wait() if v76 then v76:Disconnect() end end) local v80 = Instance.new("TextButton") v80.Size = UDim2.new(1, 0, 0, 30) v80.Text = "[!] Destroy GUI" v80.BackgroundColor3 = Color3.fromRGB(80, 0, 0) v80.TextColor3 = Color3.new(1, 1, 1) v80.Font = Enum.Font.Code v80.TextSize = 14 v80.Parent = v14 v80.MouseButton1Click:Connect(v56() v7:Destroy() end) local v81 = Instance.new("TextLabel") v81.Size = UDim2.new(1, -10, 0, 20) v81.Position = UDim2.new(0, 5, 1, -25) v81.BackgroundTransparency = 1 v81.Text = "[CTRL] - hide/show GUI" v81.TextColor3 = Color3.fromRGB(200, 200, 200) v81.Font = Enum.Font.Code v81.TextSize = 13 v81.TextXAlignment = Enum.TextXAlignment.Right v81.Parent = v8
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Camera = workspace.CurrentCamera
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
+
+-- GUI Setup
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "SECRET_GUI"
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 340, 0, 540)
+MainFrame.Position = UDim2.new(0.05, 0, 0.1, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = false
+MainFrame.Parent = ScreenGui
+
+
+-- Переключение видимости GUI по Ctrl
+local guiVisible = true
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+	if input.KeyCode == Enum.KeyCode.LeftControl and not gameProcessed then
+		guiVisible = not guiVisible
+		ScreenGui.Enabled = guiVisible
+	end
+end)
+
+
+
+
+-- Draggable GUI
+local dragging, dragInput, dragStart, startPos
+MainFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = MainFrame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then dragging = false end
+		end)
+	end
+end)
+
+MainFrame.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then dragInput = input end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - dragStart
+		MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+end)
+
+-- Sound
+local toggleSound = Instance.new("Sound")
+toggleSound.SoundId = "rbxassetid://17208361335"
+toggleSound.Volume = 1
+toggleSound.Parent = MainFrame
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 35)
+Title.Text = "Player Helper"
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Title.Font = Enum.Font.Code
+Title.TextSize = 18
+Title.Parent = MainFrame
+
+-- Scrollable Button Container
+local ButtonContainer = Instance.new("ScrollingFrame")
+ButtonContainer.Position = UDim2.new(0, 5, 0, 40)
+ButtonContainer.Size = UDim2.new(1, -10, 1, -45)
+ButtonContainer.CanvasSize = UDim2.new(0, 0, 2, 0)
+ButtonContainer.ScrollBarThickness = 4
+ButtonContainer.BackgroundTransparency = 1
+ButtonContainer.Parent = MainFrame
+
+local layout = Instance.new("UIListLayout", ButtonContainer)
+layout.Padding = UDim.new(0, 5)
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Folders
+local espFolder = Instance.new("Folder", workspace)
+espFolder.Name = "VaultESP"
+local trailFolder = Instance.new("Folder", workspace)
+trailFolder.Name = "VaultTrails"
+local glowFolder = Instance.new("Folder", workspace)
+glowFolder.Name = "VaultGlows"
+
+-- Create Toggle Button
+local function createToggleButton(text, stateRef, callback)
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(1, 0, 0, 30)
+	btn.Text = text
+	btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Font = Enum.Font.Code
+	btn.TextSize = 14
+	btn.Parent = ButtonContainer
+
+	local status = Instance.new("TextLabel")
+	status.Size = UDim2.new(0, 20, 1, 0)
+	status.Position = UDim2.new(1, -25, 0, 0)
+	status.Text = stateRef.enabled and "✔" or "✖"
+	status.TextColor3 = stateRef.enabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
+	status.Font = Enum.Font.Code
+	status.TextSize = 14
+	status.BackgroundTransparency = 1
+	status.Parent = btn
+
+	btn.MouseButton1Click:Connect(function()
+		stateRef.enabled = not stateRef.enabled
+		status.Text = stateRef.enabled and "✔" or "✖"
+		status.TextColor3 = stateRef.enabled and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
+		toggleSound:Play()
+		callback(stateRef.enabled)
+	end)
+end
+
+-- ESP
+local espState = {enabled = false}
+createToggleButton("Toggle ESP", espState, function(enabled)
+	espFolder:ClearAllChildren()
+	if enabled then
+		RunService:BindToRenderStep("VaultESP", Enum.RenderPriority.Camera.Value + 1, function()
+			espFolder:ClearAllChildren()
+			for _, plr in pairs(Players:GetPlayers()) do
+				if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+					local box = Instance.new("BoxHandleAdornment")
+					box.Adornee = plr.Character
+					box.Size = Vector3.new(4, 6, 2)
+					box.Color3 = Color3.fromRGB(255, 60, 60)
+					box.Transparency = 0.4
+					box.AlwaysOnTop = true
+					box.ZIndex = 5
+					box.Parent = espFolder
+				end
+			end
+		end)
+	else
+		RunService:UnbindFromRenderStep("VaultESP")
+	end
+end)
+
+-- Name ESP with Distance
+local nameESPState = {enabled = false}
+createToggleButton("Toggle Name ESP", nameESPState, function(enabled)
+	glowFolder:ClearAllChildren()
+	if enabled then
+		RunService:BindToRenderStep("NameESP", Enum.RenderPriority.Camera.Value + 2, function()
+			glowFolder:ClearAllChildren()
+			for _, plr in pairs(Players:GetPlayers()) do
+				if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("Head") then
+					local gui = Instance.new("BillboardGui")
+					gui.Adornee = plr.Character.Head
+					gui.Size = UDim2.new(0, 100, 0, 40)
+					gui.StudsOffset = Vector3.new(0, 2, 0)
+					gui.AlwaysOnTop = true
+					gui.Parent = glowFolder
+
+					local nameLabel = Instance.new("TextLabel")
+					nameLabel.Size = UDim2.new(1, 0, 1, 0)
+					nameLabel.BackgroundTransparency = 1
+					nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+					nameLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+					nameLabel.TextStrokeTransparency = 0.5
+					nameLabel.TextScaled = true
+					nameLabel.Font = Enum.Font.Code
+					local distance = math.floor((plr.Character.Head.Position - Camera.CFrame.Position).Magnitude)
+					nameLabel.Text = plr.DisplayName .. " [" .. distance .. "m]"
+					nameLabel.Parent = gui
+				end
+			end
+		end)
+	else
+		RunService:UnbindFromRenderStep("NameESP")
+		glowFolder:ClearAllChildren()
+	end
+end)
+
+local tracerFolder = Instance.new("Folder", workspace)
+tracerFolder.Name = "VaultTracers"
+local highlightFolder = Instance.new("Folder", workspace)
+highlightFolder.Name = "VaultHighlights"
+local healthBarFolder = Instance.new("Folder", workspace)
+healthBarFolder.Name = "VaultHealthBars"
+
+-- Удаление ESP при респавне
+LocalPlayer.CharacterAdded:Connect(function()
+	wait(1)
+	if espState.enabled then
+		RunService:UnbindFromRenderStep("VaultESP")
+		espState.enabled = false
+		wait(0.1)
+		espState.enabled = true
+		RunService:BindToRenderStep("VaultESP", Enum.RenderPriority.Camera.Value + 1, function()
+			espFolder:ClearAllChildren()
+			for _, plr in pairs(Players:GetPlayers()) do
+				if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+					local box = Instance.new("BoxHandleAdornment")
+					box.Adornee = plr.Character
+					box.Size = Vector3.new(4, 6, 2)
+					box.Color3 = Color3.fromRGB(255, 60, 60)
+					box.Transparency = 0.4
+					box.AlwaysOnTop = true
+					box.ZIndex = 5
+					box.Parent = espFolder
+				end
+			end
+		end)
+	end
+end)
+
+-- Добавление UI Corner для Health Bar ESP
+
+local healthESPState = {enabled = false}
+
+createToggleButton("Health Bar ESP", healthESPState, function(enabled)
+	healthBarFolder:ClearAllChildren()
+	if enabled then
+		RunService:BindToRenderStep("HealthBarESP", Enum.RenderPriority.Camera.Value + 3, function()
+			healthBarFolder:ClearAllChildren()
+			for _, plr in pairs(Players:GetPlayers()) do
+				if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("Head") and plr.Character:FindFirstChild("Humanoid") then
+					local gui = Instance.new("BillboardGui")
+					gui.Adornee = plr.Character.Head
+					gui.Size = UDim2.new(0, 100, 0, 8)
+					gui.StudsOffset = Vector3.new(0, 3, 0)
+					gui.AlwaysOnTop = true
+					
+					-- Добавляем UI Corner для округлённых углов
+					local uiCorner = Instance.new("UICorner")
+					uiCorner.CornerRadius = UDim.new(0, 4)  -- Округляем углы
+					uiCorner.Parent = gui
+
+					gui.Parent = healthBarFolder
+
+					local bar = Instance.new("Frame")
+					bar.Size = UDim2.new(plr.Character.Humanoid.Health / plr.Character.Humanoid.MaxHealth, 0, 1, 0)
+					bar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+					bar.BorderSizePixel = 0
+					bar.Parent = gui
+
+					local bg = Instance.new("Frame")
+					bg.Size = UDim2.new(1, 0, 1, 0)
+					bg.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+					bg.BorderSizePixel = 0
+					bg.ZIndex = -1
+					bg.Parent = gui
+
+					-- Добавление UI Corner для фона
+					local bgCorner = Instance.new("UICorner")
+					bgCorner.CornerRadius = UDim.new(0, 4)  
+					bgCorner.Parent = bg
+				end
+			end
+		end)
+	else
+		RunService:UnbindFromRenderStep("HealthBarESP")
+		healthBarFolder:ClearAllChildren()
+	end
+end)
+
+local highlightState = {enabled = false}
+createToggleButton("Highlight ESP", highlightState, function(enabled)
+	highlightFolder:ClearAllChildren()
+	if enabled then
+		RunService:BindToRenderStep("HighlightESP", Enum.RenderPriority.Camera.Value + 6, function()
+			highlightFolder:ClearAllChildren()
+			for _, plr in pairs(Players:GetPlayers()) do
+				if plr ~= LocalPlayer and plr.Character then
+					local highlight = Instance.new("Highlight")
+					highlight.Adornee = plr.Character
+					highlight.FillColor = Color3.fromRGB(255, 255, 255)
+					highlight.FillTransparency = 0.5
+					highlight.OutlineTransparency = 0
+					highlight.Parent = highlightFolder
+				end
+			end
+		end)
+	else
+		RunService:UnbindFromRenderStep("HighlightESP")
+	end
+end)
+
+
+local aimbotState = {enabled = false}  
+local aimRadius = 25  
+local smoothness = 0.12  
+
+local target = nil
+local Players = game:GetService("Players")
+local Camera = game:GetService("Workspace").CurrentCamera
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+
+
+createToggleButton("Toggle Aimbot", aimbotState, function(enabled)
+    aimbotState.enabled = enabled
+    if aimbotState.enabled then
+        toggleButton.Text = "Aimbot: ON"
+        LocalPlayer.CameraMode = Enum.CameraMode.LockFirstPerson 
+    else
+        toggleButton.Text = "Aimbot: OFF"
+        LocalPlayer.CameraMode = Enum.CameraMode.Classic 
+    end
+end)
+
+
+-- Aimbot Settings Panel (внутри основного GUI)
+
+local radiusLabel = Instance.new("TextLabel")
+radiusLabel.Size = UDim2.new(1, -10, 0, 20)
+radiusLabel.BackgroundTransparency = 1
+radiusLabel.Text = "Aim Radius"
+radiusLabel.TextColor3 = Color3.new(1, 1, 1)
+radiusLabel.Font = Enum.Font.Code
+radiusLabel.TextSize = 14
+radiusLabel.Parent = ButtonContainer
+
+local radiusBox = Instance.new("TextBox")
+radiusBox.Size = UDim2.new(1, -10, 0, 25)
+radiusBox.Text = tostring(aimRadius)
+radiusBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+radiusBox.TextColor3 = Color3.new(1, 1, 1)
+radiusBox.Font = Enum.Font.Code
+radiusBox.TextSize = 14
+radiusBox.ClearTextOnFocus = false
+radiusBox.Parent = ButtonContainer
+
+local smoothLabel = Instance.new("TextLabel")
+smoothLabel.Size = UDim2.new(1, -10, 0, 20)
+smoothLabel.BackgroundTransparency = 1
+smoothLabel.Text = "Smoothness"
+smoothLabel.TextColor3 = Color3.new(1, 1, 1)
+smoothLabel.Font = Enum.Font.Code
+smoothLabel.TextSize = 14
+smoothLabel.Parent = ButtonContainer
+
+local smoothBox = Instance.new("TextBox")
+smoothBox.Size = UDim2.new(1, -10, 0, 25)
+smoothBox.Text = tostring(smoothness)
+smoothBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+smoothBox.TextColor3 = Color3.new(1, 1, 1)
+smoothBox.Font = Enum.Font.Code
+smoothBox.TextSize = 14
+smoothBox.ClearTextOnFocus = false
+smoothBox.Parent = ButtonContainer
+
+local applyBtn = Instance.new("TextButton")
+applyBtn.Size = UDim2.new(1, 0, 0, 30)
+applyBtn.Text = "Apply Aimbot Settings"
+applyBtn.BackgroundColor3 = Color3.fromRGB(50, 100, 50)
+applyBtn.TextColor3 = Color3.new(1, 1, 1)
+applyBtn.Font = Enum.Font.Code
+applyBtn.TextSize = 14
+applyBtn.Parent = ButtonContainer
+
+applyBtn.MouseButton1Click:Connect(function()
+	local newRadius = tonumber(radiusBox.Text)
+	local newSmooth = tonumber(smoothBox.Text)
+	if newRadius and newSmooth then
+		aimRadius = newRadius
+		smoothness = newSmooth
+	end
+end)
+
+
+
+
+
+local function updateTarget()
+    local closest = nil
+    local shortestDist = aimRadius
+
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("Head") then
+            local head = plr.Character.Head
+            local dist = (Camera.CFrame.Position - head.Position).Magnitude
+            if dist < shortestDist then
+                shortestDist = dist
+                closest = head
+            end
+        end
+    end
+
+    target = closest
+end
+
+
+RunService.RenderStepped:Connect(function()
+    if aimbotState.enabled then
+        updateTarget()
+        if target then
+            local camPos = Camera.CFrame.Position
+            local headPos = target.Position + Vector3.new(0, 0.1, 0)
+            local newCFrame = CFrame.new(camPos, headPos)
+            Camera.CFrame = Camera.CFrame:Lerp(newCFrame, smoothness)
+        end
+    end
+end)
+
+
+
+
+
+local speedLabel = Instance.new("TextLabel")
+speedLabel.Size = UDim2.new(1, -10, 0, 20)
+speedLabel.BackgroundTransparency = 1
+speedLabel.Text = "WalkSpeed: 16"
+speedLabel.TextColor3 = Color3.new(1, 1, 1)
+speedLabel.Font = Enum.Font.Code
+speedLabel.TextSize = 14
+speedLabel.Parent = ButtonContainer
+
+local speedSlider = Instance.new("TextButton")
+speedSlider.Size = UDim2.new(1, -10, 0, 20)
+speedSlider.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+speedSlider.Text = ""
+speedSlider.AutoButtonColor = false
+speedSlider.Parent = ButtonContainer
+
+local speedFill = Instance.new("Frame")
+speedFill.Size = UDim2.new(0.05, 0, 1, 0)
+speedFill.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+speedFill.BorderSizePixel = 0
+speedFill.Parent = speedSlider
+
+local speedValue = 16
+
+speedSlider.MouseButton1Down:Connect(function()
+	local conn
+	conn = RunService.RenderStepped:Connect(function()
+		local pos = UserInputService:GetMouseLocation().X
+		local rel = pos - speedSlider.AbsolutePosition.X
+		local percent = math.clamp(rel / speedSlider.AbsoluteSize.X, 0, 1)
+		speedFill.Size = UDim2.new(percent, 0, 1, 0)
+		speedValue = math.floor(16 + (500 - 16) * percent)
+		speedLabel.Text = "WalkSpeed: " .. speedValue
+		if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+			LocalPlayer.Character.Humanoid.WalkSpeed = speedValue
+		end
+	end)
+	UserInputService.InputEnded:Wait()
+	if conn then conn:Disconnect() end
+end)
+
+
+local jumpLabel = Instance.new("TextLabel")
+jumpLabel.Size = UDim2.new(1, -10, 0, 20)
+jumpLabel.BackgroundTransparency = 1
+jumpLabel.Text = "JumpPower: 50"
+jumpLabel.TextColor3 = Color3.new(1, 1, 1)
+jumpLabel.Font = Enum.Font.Code
+jumpLabel.TextSize = 14
+jumpLabel.Parent = ButtonContainer
+
+local jumpSlider = Instance.new("TextButton")
+jumpSlider.Size = UDim2.new(1, -10, 0, 20)
+jumpSlider.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+jumpSlider.Text = ""
+jumpSlider.AutoButtonColor = false
+jumpSlider.Parent = ButtonContainer
+
+local jumpFill = Instance.new("Frame")
+jumpFill.Size = UDim2.new(0.1, 0, 1, 0)
+jumpFill.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+jumpFill.BorderSizePixel = 0
+jumpFill.Parent = jumpSlider
+
+local jumpValue = 50
+
+jumpSlider.MouseButton1Down:Connect(function()
+	local conn
+	conn = RunService.RenderStepped:Connect(function()
+		local pos = UserInputService:GetMouseLocation().X
+		local rel = pos - jumpSlider.AbsolutePosition.X
+		local percent = math.clamp(rel / jumpSlider.AbsoluteSize.X, 0, 1)
+		jumpFill.Size = UDim2.new(percent, 0, 1, 0)
+		jumpValue = math.floor(50 + (500 - 50) * percent)
+		jumpLabel.Text = "JumpPower: " .. jumpValue
+		if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+			LocalPlayer.Character.Humanoid.JumpPower = jumpValue
+		end
+	end)
+	UserInputService.InputEnded:Wait()
+	if conn then conn:Disconnect() end
+end)
+
+
+
+
+local destroyButton = Instance.new("TextButton")
+destroyButton.Size = UDim2.new(1, 0, 0, 30)
+destroyButton.Text = "[!] Destroy GUI"
+destroyButton.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
+destroyButton.TextColor3 = Color3.new(1, 1, 1)
+destroyButton.Font = Enum.Font.Code
+destroyButton.TextSize = 14
+destroyButton.Parent = ButtonContainer
+
+destroyButton.MouseButton1Click:Connect(function()
+	ScreenGui:Destroy()
+end)
+
+
+
+
+local hintLabel = Instance.new("TextLabel")
+hintLabel.Size = UDim2.new(1, -10, 0, 20)
+hintLabel.Position = UDim2.new(0, 5, 1, -25)
+hintLabel.BackgroundTransparency = 1
+hintLabel.Text = "[CTRL] - hide/show GUI"
+hintLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+hintLabel.Font = Enum.Font.Code
+hintLabel.TextSize = 13
+hintLabel.TextXAlignment = Enum.TextXAlignment.Right
+hintLabel.Parent = MainFrame
